@@ -1,7 +1,7 @@
 redis-router
 ============
 
-<strong>redis_router</strong>, a redis sharding library/api for your sharding needs.
+<strong>redis_router</strong>, a redis sharding library/api for your redis sharding needs.
 
 how it works
 ==============
@@ -44,7 +44,7 @@ servers.txt (server:ip weight)
 your python code:
 
 ``` python
-router = Router("serverlist")
+router = Router("servers.txt")
 
 router.set("forge", 13)
 router.set("spawning_pool", 18)
