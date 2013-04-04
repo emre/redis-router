@@ -80,7 +80,7 @@ results: {
 }
 ```
 
-<img src="http://github.com/emre/redis-router/shardacross.png">
+<img src="https://raw.github.com/emre/redis-router/master/shardacross.png">
  
 
 
