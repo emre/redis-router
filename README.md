@@ -69,7 +69,7 @@ It's minimum. At least better than:
 Node = Hash(key) MOD N
 ```
 
-> Q: I wanna see some stats on the table about shard effiency.
+> Q: I want to see some stats about sharding efficiency.
 
 Results for 100.000 random keys.
 ```
