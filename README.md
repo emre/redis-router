@@ -69,9 +69,10 @@ running TCP interface
 =======================
 
 ``` python
-from redis_router.http_interface import start_server
+from redis_router.tcp_interface import RouterServer
 
-start_server('0.0.0.0', 5000)
+r = RouterServer('0.0.0.0', 5000)
+r.run()
 ```
 
 <strong>playing with it</strong>
