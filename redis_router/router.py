@@ -56,6 +56,9 @@ class Router(object):
 
     def __getattr__(self, methodname):
 
+        if methodname in self.METHOD_BLACKLIST:
+            raise AttributeError('this method is not allowed with redis_router')
+
         def method(*args, **kwargs):
             if len(args) < 1:
                 raise AttributeError("not enough arguments.")
