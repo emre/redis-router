@@ -8,7 +8,8 @@ class Router(object):
 
     SERVERS = {}
     METHOD_BLACKLIST = [
-        'smove',  # it's hard to shard with atomic approach.
+        'smove', # it's hard to shard with atomic approach.
+        'move',
     ]
 
     def __init__(self, ketama_server_file):
@@ -23,15 +24,15 @@ class Router(object):
                 server_string: None,
             })
 
-    def strict_connection(self, hostname, port):
-        if not isinstance(port, int):
+    def strict_connection(self, hostname, port, timeout=None):
 
+        if not isinstance(port, int):
             try:
                 port = int(port)
             except ValueError:
                 raise ValueError('port must be int or int convertable.')
 
-        return redis.StrictRedis(host=hostname, port=port, db=0)
+        return redis.StrictRedis(host=hostname, port=port, db=0, socket_timeout=timeout)
 
     def get_connection(self, key):
         key_hash, connection_uri = self.continuum.get_server(key)
@@ -77,7 +78,7 @@ class Router(object):
             yield set(self.smembers(key))
 
     def sinter(self, *args):
-        return (set.intersection(*self.__set_generator(*args)))
+        return set.intersection(*self.__set_generator(*args))
 
     def sinterstore(self, destination, *args):
         intersection = self.sinter(*args)
@@ -87,7 +88,7 @@ class Router(object):
         return len(intersection)
 
     def sdiff(self, *args):
-        return (set.difference(*self.__set_generator(*args)))
+        return set.difference(*self.__set_generator(*args))
 
     def sdiffstore(self, destination, *args):
         difference = self.sdiff(*args)
@@ -97,7 +98,7 @@ class Router(object):
         return len(difference)
 
     def sunion(self, *args):
-        return (set.union(*self.__set_generator(*args)))
+        return set.union(*self.__set_generator(*args))
 
     def sunionstore(self, destination, *args):
         union = self.sunion(*args)
@@ -106,7 +107,7 @@ class Router(object):
 
         return len(union)
 
-    def ping_all(self):
+    def ping_all(self, timeout=None):
         """
         pings all shards and returns the results.
         if a shard is down, returns 'DOWN' for the related shard.
@@ -115,7 +116,7 @@ class Router(object):
         for connection_uri, connection in self.SERVERS.items():
             if not connection:
                 try:
-                    connection = self.strict_connection(*connection_uri.split(":"))
+                    connection = self.strict_connection(*connection_uri.split(":"), timeout=timeout)
                     results.append({
                         "result": connection.ping(),
                         "connection_uri": connection_uri,
@@ -145,8 +146,6 @@ class Router(object):
         """
         flushes all the keys from all the instances.
         """
-        results = list()
-
         for connection_uri, connection in self.SERVERS.items():
             if not connection:
                 connection = self.strict_connection(*connection_uri.split(":"))
