@@ -60,7 +60,7 @@ DEBUG:key 'spawning_pool' hashed as 1434709819 and mapped to 127.0.0.1:6380
 13 6
 ```
 
-running redis_router as a server
+redis_router as a server
 ========================================
 If you have clients using X programming language other than python, you can use HTTP or TCP interface to connect 
 and send commands to redis_router.
