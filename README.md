@@ -125,6 +125,19 @@ $ curl -X POST --data "command=members&arguments=teams" http://localhost:5000
 }
 ```
 
+running tests
+=================
+``` bash
+$ py.test tests.py 
+=============================================== test session starts =========================
+platform linux2 -- Python 2.7.3 -- pytest-2.3.4
+collected 11 items 
+
+tests.py ...........
+
+============================================ 11 passed in 0.33 seconds ======================
+```
+
 FAQ
 =========
  > Q: What about data invalidation if I move servers, change the config etc.
