@@ -113,7 +113,7 @@ $ curl -X POST --data "command=sadd&arguments=teams,galatasaray,fenerbahce" http
 * get members
 
 ``` bash
-$ curl -X POST --data "command=members&arguments=teams" http://localhost:5000
+$ curl -X POST --data "command=smembers&arguments=teams" http://localhost:5000
 ```
 
 ``` json
