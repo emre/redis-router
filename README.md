@@ -79,6 +79,7 @@ results: {
     redis.client.Redis object at 0x8df7504: 35235
 }
 ```
+<img src="https://raw.github.com/emre/redis-router/master/shardacross.png">
 
 > Q: Can I use this with PHP or [INSERT RANDOM LANGUAGE HERE]
 
@@ -87,7 +88,6 @@ Yes.
 There is a <a href="https://github.com/emre/redis-router/blob/master/redis_router/tcp_interface.py">TCP server option</a>. You can always use libketama's implementations in your language though.
 
 
-<img src="https://raw.github.com/emre/redis-router/master/shardacross.png">
  
 
 
