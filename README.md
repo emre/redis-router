@@ -21,7 +21,7 @@ libketama</a> in the back.</li>
 installation
 ==========
 
-install <a href="https://github.com/RJ/ketama">libketama/ketama_python first.</a>
+install <a href="https://github.com/RJ/ketama">libketama/ketama_python </a> first.
 
 After that;
 
