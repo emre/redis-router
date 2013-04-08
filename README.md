@@ -60,6 +60,70 @@ DEBUG:key 'spawning_pool' hashed as 1434709819 and mapped to 127.0.0.1:6380
 13 6
 ```
 
+running redis_router as a server
+========================================
+If you have clients using X programming language other than python, you can use HTTP or TCP interface to connect 
+and send commands to redis_router.
+
+running TCP interface
+=======================
+
+``` python
+from redis_router.http_interface import start_server
+
+start_server('0.0.0.0', 5000)
+```
+
+<strong>playing with it</strong>
+```
+$ telnet localhost 5000
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+set selam timu
+True
+get selam
+timu
+dbsize
+13
+```
+
+HTTP API
+=============
+
+``` python
+from redis_router.http_interface import start_server
+
+start_server('0.0.0.0', 5000)
+```
+
+example request:
+
+* initialize a set with two members.
+
+``` bash
+$ curl -X POST --data "command=sadd&arguments=teams,galatasaray,fenerbahce" http://localhost:5000 
+```
+``` json
+{
+  "response": 2
+}
+```
+* get members
+
+``` bash
+$ curl -X POST --data "command=members&arguments=teams" http://localhost:5000
+```
+
+``` json
+{
+  "response": [
+    "fenerbahce", 
+    "galatasaray"
+  ]
+}
+```
+
 FAQ
 =========
  > Q: What about data invalidation if I move servers, change the config etc.
@@ -85,7 +149,9 @@ results: {
 
 Yes.
 
-There is a <a href="https://github.com/emre/redis-router/blob/master/redis_router/tcp_interface.py">TCP server option</a>. You can always use libketama's implementations in your language though.
+There are <a href="https://github.com/emre/redis-router/blob/master/redis_router/tcp_interface.py">TCP server</a> 
+and <a href="https://github.com/emre/redis-router/blob/master/redis_router/http_interface.py">HTTP Server</a> options</a>. 
+You can always use libketama's implementations in your language though.
 
 
  
