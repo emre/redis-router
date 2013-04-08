@@ -3,6 +3,8 @@ redis-router
 
 <strong>redis_router</strong>, a redis sharding library/api for your redis sharding needs.
 
+<img src="https://raw.github.com/emre/redis-router/master/workflow.png">
+
 how it works
 ==============
 
