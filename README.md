@@ -21,13 +21,17 @@ libketama</a> in the back.</li>
 installation
 ==========
 
+install <a href="https://github.com/RJ/ketama">libketama/ketama_python first.</a>
+
+After that;
+
 ```
-pip install redis_router
+pip install redis-router
 ```
 or if you like 90s:
 
 ```
-easy_install redis_router
+easy_install redis-router
 ```
 
 or add redis_router directory to the your path.
