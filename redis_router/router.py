@@ -14,16 +14,18 @@ class Router(object):
     def __init__(self, ketama_server_file):
         self.server_list = self.parse_server_file(ketama_server_file)
         self.continuum = ketama.Continuum(ketama_server_file)
+
         for hostname, port in self.server_list:
             server_string = "{0}:{1}".format(hostname, port)
 
             # creating a emtpy record for lazy connection responses.
             self.SERVERS.update({
                 server_string: None,
-                })
+            })
 
     def strict_connection(self, hostname, port):
         if not isinstance(port, int):
+
             try:
                 port = int(port)
             except ValueError:
@@ -45,7 +47,7 @@ class Router(object):
         if not connection:
             self.SERVERS.update({
                 connection_uri: self.strict_connection(hostname, port),
-                })
+            })
 
             connection = self.SERVERS.get(connection_uri)
 
@@ -75,7 +77,7 @@ class Router(object):
             yield set(self.smembers(key))
 
     def sinter(self, *args):
-        return list(set.intersection(*self.__set_generator(*args)))
+        return (set.intersection(*self.__set_generator(*args)))
 
     def sinterstore(self, destination, *args):
         intersection = self.sinter(*args)
@@ -85,7 +87,7 @@ class Router(object):
         return len(intersection)
 
     def sdiff(self, *args):
-        return list(set.difference(*self.__set_generator(*args)))
+        return (set.difference(*self.__set_generator(*args)))
 
     def sdiffstore(self, destination, *args):
         difference = self.sdiff(*args)
@@ -95,7 +97,7 @@ class Router(object):
         return len(difference)
 
     def sunion(self, *args):
-        return list(set.union(*self.__set_generator(*args)))
+        return (set.union(*self.__set_generator(*args)))
 
     def sunionstore(self, destination, *args):
         union = self.sunion(*args)
@@ -107,17 +109,22 @@ class Router(object):
     def ping_all(self):
         """
         pings all shards and returns the results.
-        raises a redis.exceptions.ConnectionError if a shard is down.
+        if a shard is down, returns 'DOWN' for the related shard.
         """
         results = list()
         for connection_uri, connection in self.SERVERS.items():
             if not connection:
-                connection = self.strict_connection(*connection_uri.split(":"))
-
-            results.append({
-                "result": connection.ping(),
-                "connection_uri": connection_uri,
-                })
+                try:
+                    connection = self.strict_connection(*connection_uri.split(":"))
+                    results.append({
+                        "result": connection.ping(),
+                        "connection_uri": connection_uri,
+                    })
+                except redis.exceptions.ConnectionError:
+                    results.append({
+                        "result": 'DOWN',
+                        "connection_uri": connection_uri,
+                    })
 
         return results
 
@@ -133,6 +140,18 @@ class Router(object):
             result += int(connection.dbsize())
 
         return result
+
+    def flush_all(self):
+        """
+        flushes all the keys from all the instances.
+        """
+        results = list()
+
+        for connection_uri, connection in self.SERVERS.items():
+            if not connection:
+                connection = self.strict_connection(*connection_uri.split(":"))
+
+            connection.flushall()
 
     def parse_server_file(self, ketama_server_file):
         file_content = open(ketama_server_file).read()
