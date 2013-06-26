@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Redis-router by emre</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Redis-router</h1>
+        <h2>A redis sharding library/api for your sharding needs.</h2>
+        <a href="https://github.com/emre/redis-router" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="redis-router" class="anchor" href="#redis-router"><span class="octicon octicon-link"></span></a>redis-router</h1>
+
+<p><strong>redis_router</strong>, a redis sharding library/api for your redis sharding needs.</p>
+
+<p><img src="https://raw.github.com/emre/redis-router/master/workflow.png"></p>
+
+<h1>
+<a name="how-it-works" class="anchor" href="#how-it-works"><span class="octicon octicon-link"></span></a>how it works</h1>
+
+<p><a href="http://en.wikipedia.org/wiki/Consistent_hashing">wikipedia/consistent_hashing</a></p>
+
+<blockquote>
+<p>Consistent hashing is a special kind of hashing. 
+When a hash table is resized and consistent hashing is used, only  keys need to be remapped on average,
+where  is the number of keys, and  is the number of slots. In contrast, in most traditional hash tables,
+a change in the number of array slots causes nearly all keys to be remapped.</p>
+</blockquote>
+
+<p>redis_router uses <a href="http://last.fm">last.fm</a>'s <a href="https://github.com/RJ/ketama">
+libketama</a> in the back.</p>
+
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>installation</h1>
+
+<p>install <a href="https://github.com/RJ/ketama">libketama/ketama_python </a> first.</p>
+
+<p>After that;</p>
+
+<pre><code>pip install redis-router
+</code></pre>
+
+<p>or if you like 90s:</p>
+
+<pre><code>easy_install redis-router
+</code></pre>
+
+<p>or add redis_router directory to the your path.</p>
+
+<h1>
+<a name="quick-start" class="anchor" href="#quick-start"><span class="octicon octicon-link"></span></a>quick start</h1>
+
+<p>servers.txt (server:ip weight)</p>
+
+<pre><code>127.0.0.1:6379 100
+127.0.0.1:6380 100
+</code></pre>
+
+<p>your python code:</p>
+
+<div class="highlight"><pre><span class="n">router</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="s">"servers.txt"</span><span class="p">)</span>
+
+<span class="n">router</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">"forge"</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">"spawning_pool"</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+</pre></div>
+
+<p>output with loglevel=DEBUG</p>
+
+<pre><code>DEBUG:key 'forge' hashed as 4113771093 and mapped to 127.0.0.1:6379
+DEBUG:key 'spawning_pool' hashed as 1434709819 and mapped to 127.0.0.1:6380
+DEBUG:key 'forge' hashed as 4113771093 and mapped to 127.0.0.1:6379
+DEBUG:key 'spawning_pool' hashed as 1434709819 and mapped to 127.0.0.1:6380
+</code></pre>
+
+<h1>
+<a name="redis_router-as-a-server" class="anchor" href="#redis_router-as-a-server"><span class="octicon octicon-link"></span></a>redis_router as a server</h1>
+
+<p>If you have clients using X programming language other than python, you can use HTTP or TCP interface to connect 
+and send commands to redis_router.</p>
+
+<h1>
+<a name="running-tcp-interface" class="anchor" href="#running-tcp-interface"><span class="octicon octicon-link"></span></a>running TCP interface</h1>
+
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">redis_router.tcp_interface</span> <span class="kn">import</span> <span class="n">RouterServer</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">RouterServer</span><span class="p">(</span><span class="s">'0.0.0.0'</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+<p><strong>playing with it</strong></p>
+
+<pre><code>$ telnet localhost 5000
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+set selam timu
+True
+get selam
+timu
+dbsize
+13
+</code></pre>
+
+<h1>
+<a name="http-api" class="anchor" href="#http-api"><span class="octicon octicon-link"></span></a>HTTP API</h1>
+
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">redis_router.http_interface</span> <span class="kn">import</span> <span class="n">start_server</span>
+
+<span class="n">start_server</span><span class="p">(</span><span class="s">'0.0.0.0'</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+</pre></div>
+
+<p>example request:</p>
+
+<ul>
+<li>initialize a set with two members.</li>
+</ul><div class="highlight"><pre><span class="nv">$ </span>curl -X POST --data <span class="s2">"command=sadd&amp;arguments=teams,galatasaray,fenerbahce"</span> http://localhost:5000 
+</pre></div>
+
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">"response"</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">}</span>
+</pre></div>
+
+<ul>
+<li>get members</li>
+</ul><div class="highlight"><pre><span class="nv">$ </span>curl -X POST --data <span class="s2">"command=smembers&amp;arguments=teams"</span> http://localhost:5000
+</pre></div>
+
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">"response"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">"fenerbahce"</span><span class="p">,</span> 
+    <span class="s2">"galatasaray"</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="running-tests" class="anchor" href="#running-tests"><span class="octicon octicon-link"></span></a>running tests</h1>
+
+<div class="highlight"><pre><span class="nv">$ </span>py.test tests.py 
+<span class="o">===============================================</span> <span class="nb">test </span>session <span class="nv">starts</span> <span class="o">=========================</span>
+platform linux2 -- Python 2.7.3 -- pytest-2.3.4
+collected 11 items 
+
+tests.py ...........
+
+<span class="o">============================================</span> 11 passed in 0.33 <span class="nv">seconds</span> <span class="o">======================</span>
+</pre></div>
+
+<h1>
+<a name="faq" class="anchor" href="#faq"><span class="octicon octicon-link"></span></a>FAQ</h1>
+
+<blockquote>
+<p>Q: What about data invalidation if I move servers, change the config etc.</p>
+</blockquote>
+
+<p>It's minimum. At least better than:</p>
+
+<pre><code>Node = Hash(key) MOD N
+</code></pre>
+
+<blockquote>
+<p>Q: I want to see some stats about sharding efficiency.</p>
+</blockquote>
+
+<p>Results for 100.000 random keys.</p>
+
+<pre><code>results: {
+    redis.client.Redis object at 0x8df75a4: 33558,
+    redis.client.Redis object at 0x8df7644: 31207,
+    redis.client.Redis object at 0x8df7504: 35235
+}
+</code></pre>
+
+<p><img src="https://raw.github.com/emre/redis-router/master/shardacross.png"></p>
+
+<blockquote>
+<p>Q: Can I use this with PHP or [INSERT RANDOM LANGUAGE HERE]</p>
+</blockquote>
+
+<p>Yes.</p>
+
+<p>There are <a href="https://github.com/emre/redis-router/blob/master/redis_router/tcp_interface.py">TCP server</a> 
+and <a href="https://github.com/emre/redis-router/blob/master/redis_router/http_interface.py">HTTP Server</a> options. 
+You can always use libketama's implementations in your language though.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/emre/redis-router/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/emre/redis-router/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/emre/redis-router"></a> is maintained by <a href="https://github.com/emre">emre</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
