@@ -1,35 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Redis-router by emre</title>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Redis-router : A redis sharding library/api for your sharding needs." />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Redis-router</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1 class="header">Redis-router</h1>
-        <p class="header">A redis sharding library/api for your sharding needs.</p>
 
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/emre/redis-router/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/emre/redis-router/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/emre/redis-router">View On GitHub</a></li>
-        </ul>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/emre/redis-router">View on GitHub</a>
 
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/emre">emre</a></p>
+          <h1 id="project_title">Redis-router</h1>
+          <h2 id="project_tagline">A redis sharding library/api for your sharding needs.</h2>
 
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/emre/redis-router/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/emre/redis-router/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
 
-      </header>
-      <section>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
 <a name="redis-router" class="anchor" href="#redis-router"><span class="octicon octicon-link"></span></a>redis-router</h1>
 
@@ -43,10 +44,10 @@
 <p><a href="http://en.wikipedia.org/wiki/Consistent_hashing">wikipedia/consistent_hashing</a></p>
 
 <blockquote>
-<p>Consistent hashing is a special kind of hashing. 
-When a hash table is resized and consistent hashing is used, only  keys need to be remapped on average,
-where  is the number of keys, and  is the number of slots. In contrast, in most traditional hash tables,
-a change in the number of array slots causes nearly all keys to be remapped.</p>
+<p>Consistent hashing is a special kind of hashing. When a hash table is resized and consistent hashing is used,
+only K/n keys need to be remapped on average, where K is the number of keys, and n is the number of slots.
+In contrast, in most traditional hash tables, a change in the number of array slots causes
+nearly all keys to be remapped.</p>
 </blockquote>
 
 <p>redis_router uses <a href="http://last.fm">last.fm</a>'s <a href="https://github.com/RJ/ketama">
@@ -92,6 +93,7 @@ libketama</a> in the back.</p>
 DEBUG:key 'spawning_pool' hashed as 1434709819 and mapped to 127.0.0.1:6380
 DEBUG:key 'forge' hashed as 4113771093 and mapped to 127.0.0.1:6379
 DEBUG:key 'spawning_pool' hashed as 1434709819 and mapped to 127.0.0.1:6380
+13 6
 </code></pre>
 
 <h1>
@@ -206,11 +208,17 @@ tests.py ...........
 and <a href="https://github.com/emre/redis-router/blob/master/redis_router/http_interface.py">HTTP Server</a> options. 
 You can always use libketama's implementations in your language though.</p>
       </section>
-      <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Redis-router maintained by <a href="https://github.com/emre">emre</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
+
+    
+
   </body>
 </html>
