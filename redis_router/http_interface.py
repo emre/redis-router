@@ -1,6 +1,10 @@
 # -*- coding: utf8 -*-
 
-from flask import Flask, render_template, jsonify, request
+try:
+    from flask import Flask, render_template, jsonify, request
+except ImportError:
+    raise ImportError('flask library is not installed.')
+
 from router import Router
 
 import os

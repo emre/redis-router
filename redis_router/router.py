@@ -1,4 +1,9 @@
-import ketama
+
+try:
+    import ketama
+except ImportError:
+    raise ImportError('libketama is not installed.')    
+
 import redis
 import re
 import logging
@@ -8,7 +13,7 @@ class Router(object):
 
     SERVERS = {}
     METHOD_BLACKLIST = [
-        'smove', # it's hard to shard with atomic approach.
+        'smove',  # it's hard to shard with atomic approach.
         'move',
     ]
 

@@ -2,9 +2,13 @@ import logging
 import sys
 import os
 
-from router import Router
 
-from gevent.server import StreamServer
+try:
+    from gevent.server import StreamServer
+except ImportError:
+    raise Exception('gevent library is not installed.')
+
+from router import Router
 
 
 class RouterServer(object):
