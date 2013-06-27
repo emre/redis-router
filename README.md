@@ -10,10 +10,10 @@ how it works
 
 <a href="http://en.wikipedia.org/wiki/Consistent_hashing">wikipedia/consistent_hashing</a>
 
-> Consistent hashing is a special kind of hashing. 
-> When a hash table is resized and consistent hashing is used, only  keys need to be remapped on average,
-> where  is the number of keys, and  is the number of slots. In contrast, in most traditional hash tables,
-> a change in the number of array slots causes nearly all keys to be remapped.
+> Consistent hashing is a special kind of hashing. When a hash table is resized and consistent hashing is used,
+> only K/n keys need to be remapped on average, where K is the number of keys, and n is the number of slots.
+> In contrast, in most traditional hash tables, a change in the number of array slots causes
+> nearly all keys to be remapped.
 
 redis_router uses <a href="http://last.fm">last.fm</a>'s <a href="https://github.com/RJ/ketama">
 libketama</a> in the back.</li>
