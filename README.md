@@ -178,3 +178,7 @@ You can always use libketama's implementations in your language though.
 
 
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/emre/redis-router/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
