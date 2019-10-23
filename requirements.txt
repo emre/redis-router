@@ -1,4 +1,4 @@
-Flask==0.9
+Flask==1.0
 gevent==0.13.8
 ketama==0.1
 py==1.4.13
