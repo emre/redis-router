@@ -1,6 +1,6 @@
 Flask==0.9
 gevent==0.13.8
 ketama==0.1
-py==1.4.13
+py==1.10.0
 pytest==2.3.4
 redis==2.7.2
